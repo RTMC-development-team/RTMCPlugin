@@ -1,0 +1,9 @@
+sync:
+  servers: 0
+  path: /dev/shm/RTMCPlugin/pipes/server
+chat:
+  format:
+    default: "[{WORLD}][{RANK}][{PLAYERNAME}]: {MESSAGE}"
+    adminchat: "[ADMINCHAT][{PLAYERNAME}]: {MESSAGE}"
+  worlds:
+    FTB: "&9F&aT&cB"

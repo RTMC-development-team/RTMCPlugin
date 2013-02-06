@@ -1,0 +1,53 @@
+main: com.rushteamc.RTMCPlugin.RTMCPlugin
+name: RTMCPlugin
+version: 0.2
+author: STSc
+description: The official RTMC plugin!
+website: www.rushteamc.com
+depend: [PermissionsEx]
+permissions:
+ RTMCPlugin.*:
+  default: false
+  children:
+   RTMCOnlineList.rtmctest: true
+   RTMCPlugin.admin.*: true
+   RTMCPlugin.adminchat.*: true
+ RTMCPlugin.rtmctest:
+  default: false
+  description: Allowes the use of /rtmctest
+ RTMCPlugin.admin.*:
+  default: false
+  children:
+   RTMCPlugin.admin.sync: true
+ RTMCPlugin.admin.sync:
+  default: false
+  description: Required administrate the synchronizer
+ RTMCPlugin.adminchat.*:
+  default: false
+  children:
+   RTMCPlugin.adminchat.listen: true
+   RTMCPlugin.adminchat.speak: true
+ RTMCPlugin.adminchat.listen:
+  default: false
+  description: Required to listen see the admin chat
+ RTMCPlugin.adminchat.speak:
+  default: false
+  description: Required to listen talk in admin chat
+commands:
+ rtmctest:
+  description: Just a global test command.
+  permission: RTMCPlugin.rtmctest
+  permission-message: You do not have permissions to use the test command!
+  usage: /rtmctest some random parameters
+ rtmcsync:
+  description: Used to reset the synchronizer.
+  permission: RTMCPlugin.admin.sync
+  permission-message: You do not have permissions to mess with the synchronizer!
+  usage: /rtmcsync [reset]
+ atoggle:
+  description: Used to toggle admin chat on or off.
+  permission: RTMCPlugin.adminchat.speak
+ amsg:
+  description: Send a message to admin chat.
+  permission: RTMCPlugin.adminchat.speak
+  aliases: [a]

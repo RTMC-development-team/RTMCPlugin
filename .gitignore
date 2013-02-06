@@ -1,3 +1,11 @@
+# Commenly unwanted files #
+*~
+
+# unwanted directories # 
+.settings/
+target/
+
+# Java specific unwanted files #
 *.class
 
 # Package Files #

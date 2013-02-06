@@ -1,18 +1,16 @@
 package com.rushteamc.RTMCPlugin;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.rushteamc.RTMCPlugin.ChatManager.ChatManager;
 import com.rushteamc.RTMCPlugin.adminChat.adminChatMain;
-import com.rushteamc.RTMCPlugin.sync.syncMain;
-import com.rushteamc.RTMCPlugin.sync.message.meChat;
+import com.rushteamc.RTMCPlugin.sync.Synchronizer;
 
 public class RTMCPlugin extends JavaPlugin
 {
-	public syncMain sync;
+	public Synchronizer sync;
 	public adminChatMain adminChat;
 	
 	public void onLoad()
@@ -22,20 +20,14 @@ public class RTMCPlugin extends JavaPlugin
 	
 	public void onEnable()
 	{
-		sync = new syncMain(this);
+		sync = new Synchronizer(this);
 		adminChat = new adminChatMain(this);
-		//Bukkit.addFakeOnline("test");
-		//getServer().addFakeOnline("test1");
-		//getServer().addFakeOnline("test2");
-		//getServer().addFakeOnline("test3");
+		ChatManager.setup(this);
 	}
 	
 	public void onDisable()
 	{
 		sync.unload();
-		//getServer().removeFakeOnline("test1");
-		//getServer().removeFakeOnline("test2");
-		//getServer().removeFakeOnline("test3");
 	}
 	
 	private String joinArguments(String[] args)
@@ -53,7 +45,8 @@ public class RTMCPlugin extends JavaPlugin
 		switch(cmd.getName())
 		{
 		case "rtmctest":
-			//sync.sendTestPacket( joinArguments(args) );
+			// TODO: remove this command.
+			ChatManager.sendMessageFormatted("STSc", "world", "HI");
 			return true;
 		case "rtmcsync":
 			int i = -1;
@@ -81,16 +74,20 @@ public class RTMCPlugin extends JavaPlugin
 				switch(args[i])
 				{
 				case "in":
+					/* TODO: remove this command
 					if(sync == null)
 						sync = new syncMain(this);
 					else
 						sync.resetIn();
+					*/
 					break;
 				case "out":
+					/* TODO: remove this command
 					if(sync == null)
 						sync = new syncMain(this);
 					else
 						sync.resetOut();
+					*/
 					break;
 				default:
 					sender.sendMessage(args[i] + " is not a valid action for reload, usage:\n" + cmd.getUsage() + " [in|out]" );
@@ -106,10 +103,6 @@ public class RTMCPlugin extends JavaPlugin
 		case "amsg":
 			adminChat.sendAdminChat(sender.getName(), joinArguments(args) );
 			return true;
-		case "me":
-			meChat message = new meChat(sender.getName(), joinArguments(args) );
-			sync.sendMessage(message);
-			return false;
 		case "msg":
 			//adminChat.sendAdminChat(sender.getName(), joinArguments(args) );
 			return false;

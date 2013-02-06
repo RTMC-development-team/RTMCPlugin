@@ -9,16 +9,20 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import com.rushteamc.RTMCPlugin.RTMCPlugin;
-import com.rushteamc.RTMCPlugin.sync.message.adminChat;
+import com.rushteamc.RTMCPlugin.ChatManager.ChatManager;
 
 public class adminChatMain
 {
 	private RTMCPlugin main;
+	private static final String AdminChatFotmat = "adminchat";
 	
 	public adminChatMain(RTMCPlugin main)
 	{
 		this.main = main;
 		main.getServer().getPluginManager().registerEvents(new adminChatEventListener(this), main);
+		String format = main.getConfig().getString("chat.format.adminchat");
+		if(format==null)
+			format = "[ADMINCHAT][{PLAYERNAME}]: {MESSAGE}";
 	}
 	
 	public static boolean getAdminChatEnabled(Player player)
@@ -36,30 +40,23 @@ public class adminChatMain
 	
 	public void togleAdminChat(String playername)
 	{
-		System.out.println("[RTMCPlugin][ADMINCHAT] Player "+playername+" togled adminchat...");
+		System.out.println("[RTMCPlugin][ADMINCHAT] Player " + playername + " togled adminchat...");
 		Player player = main.getServer().getPlayer(playername);
 		boolean enable = !getAdminChatEnabled(player);
-		System.out.println("[RTMCPlugin][ADMINCHAT] Player "+playername+" togled adminchat "+((enable)?"on":"off"));
+		System.out.println("[RTMCPlugin][ADMINCHAT] Player " + playername + " togled adminchat "+((enable)?"on":"off"));
 		player.setMetadata("adminChat", new FixedMetadataValue(main,(enable)));
 		player.sendMessage( ChatColor.RED + (enable?"Enabled":"Disabled") + " admin chat.");
 	}
 	
 	public static void sendAdminChatMessage(String playername, String msg)
 	{
-		String str = ChatColor.RED + "[ADMINCHAT][" + playername + "]: " + msg;
-		for(Player player : Bukkit.getServer().getOnlinePlayers() )
-		{
-			if( player.hasPermission("RTMCPlugin.adminchat.listen") )
-				player.sendMessage(str);
-		}
+		ChatManager.sendMessage(ChatManager.format(AdminChatFotmat, Bukkit.getPlayer(playername), msg), new String[]{"RTMCPlugin.adminchat.listen"});
 	}
 	
 	public void sendAdminChat(String playername, String msg)
 	{
 		System.out.println("[ADMINCHAT]["+playername+"]: "+msg);
 		sendAdminChatMessage(playername, msg);
-		adminChat message = new adminChat(playername, msg);
-		main.sync.sendMessage(message);
 	}
 	
 }
