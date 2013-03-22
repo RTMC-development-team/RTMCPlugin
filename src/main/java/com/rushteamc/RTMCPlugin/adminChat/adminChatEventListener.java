@@ -7,11 +7,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class adminChatEventListener implements Listener
 {
-	private adminChatMain adminchatmain;
-	
-	public adminChatEventListener(adminChatMain adminchatmain)
+	public adminChatEventListener()
 	{
-		this.adminchatmain = adminchatmain;
+		;
 	}
 	
 	@EventHandler(ignoreCancelled = true)
@@ -20,7 +18,7 @@ public class adminChatEventListener implements Listener
 		Player player = event.getPlayer();
 		if( adminChatMain.getAdminChatEnabled(player) )
 		{
-			adminchatmain.sendAdminChat(player.getName(), event.getMessage());
+			adminChatMain.sendAdminChat(player.getName(), event.getMessage());
 			event.setCancelled(true);
 		}
 	}

@@ -27,7 +27,7 @@ public class ChatManager
 	private static Map<String, String> formats = new Hashtable<String, String>();
 	public static final String BaseFormat = "default";
 	
-	public static void setup(RTMCPlugin rtmcplugin)
+	public static void init(RTMCPlugin rtmcplugin)
 	{
 		ChatManager.config = rtmcplugin.getConfig();
 		ChatManager.permissions = PermissionsEx.getPermissionManager();

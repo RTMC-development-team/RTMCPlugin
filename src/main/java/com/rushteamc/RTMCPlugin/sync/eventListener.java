@@ -16,7 +16,7 @@ public class eventListener implements Listener
 {
 	public String format;
 	
-	public eventListener(Synchronizer syncmain, FileConfiguration config)
+	public eventListener(FileConfiguration config)
 	{
 		format = config.getString("chat.format.default").replace('&', ChatColor.COLOR_CHAR);
 	}

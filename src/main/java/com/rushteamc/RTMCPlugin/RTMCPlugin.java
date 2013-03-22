@@ -2,6 +2,8 @@ package com.rushteamc.RTMCPlugin;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.rushteamc.RTMCPlugin.ChatManager.ChatManager;
@@ -10,8 +12,8 @@ import com.rushteamc.RTMCPlugin.sync.Synchronizer;
 
 public class RTMCPlugin extends JavaPlugin
 {
-	public Synchronizer sync;
-	public adminChatMain adminChat;
+	public static FileConfiguration config;
+	public static PluginManager pluginmanager;
 	
 	public void onLoad()
 	{
@@ -20,14 +22,15 @@ public class RTMCPlugin extends JavaPlugin
 	
 	public void onEnable()
 	{
-		sync = new Synchronizer(this);
-		adminChat = new adminChatMain(this);
-		ChatManager.setup(this);
+		config = getConfig();
+		Synchronizer.init(this);
+		adminChatMain.init(this);
+		ChatManager.init(this);
 	}
 	
 	public void onDisable()
 	{
-		sync.unload();
+		Synchronizer.unload();
 	}
 	
 	private String joinArguments(String[] args)
@@ -98,10 +101,10 @@ public class RTMCPlugin extends JavaPlugin
 			}
 			return true;
 		case "atoggle":
-			adminChat.togleAdminChat(sender.getName());
+			adminChatMain.togleAdminChat(sender.getName());
 			return true;
 		case "amsg":
-			adminChat.sendAdminChat(sender.getName(), joinArguments(args) );
+			adminChatMain.sendAdminChat(sender.getName(), joinArguments(args) );
 			return true;
 		case "msg":
 			//adminChat.sendAdminChat(sender.getName(), joinArguments(args) );

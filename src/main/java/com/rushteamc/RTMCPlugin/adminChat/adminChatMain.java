@@ -13,16 +13,18 @@ import com.rushteamc.RTMCPlugin.ChatManager.ChatManager;
 
 public class adminChatMain
 {
-	private RTMCPlugin main;
+	private static RTMCPlugin rtmcplugin;
 	private static final String AdminChatFotmat = "adminchat";
 	
 	public adminChatMain(RTMCPlugin main)
 	{
-		this.main = main;
-		main.getServer().getPluginManager().registerEvents(new adminChatEventListener(this), main);
-		String format = main.getConfig().getString("chat.format.adminchat");
-		if(format==null)
-			format = "[ADMINCHAT][{PLAYERNAME}]: {MESSAGE}";
+		;
+	}
+	
+	public static void init(RTMCPlugin rtmcplugin)
+	{
+		adminChatMain.rtmcplugin = rtmcplugin;
+		rtmcplugin.getServer().getPluginManager().registerEvents(new adminChatEventListener(), rtmcplugin);
 	}
 	
 	public static boolean getAdminChatEnabled(Player player)
@@ -38,13 +40,12 @@ public class adminChatMain
 		return false;
 	}
 	
-	public void togleAdminChat(String playername)
+	public static void togleAdminChat(String playername)
 	{
-		System.out.println("[RTMCPlugin][ADMINCHAT] Player " + playername + " togled adminchat...");
-		Player player = main.getServer().getPlayer(playername);
+		Player player = Bukkit.getPlayer(playername);
 		boolean enable = !getAdminChatEnabled(player);
-		System.out.println("[RTMCPlugin][ADMINCHAT] Player " + playername + " togled adminchat "+((enable)?"on":"off"));
-		player.setMetadata("adminChat", new FixedMetadataValue(main,(enable)));
+		System.out.println("[RTMCPlugin][ADMINCHAT] Player " + playername + " turned adminchat "+((enable)?"on":"off"));
+		player.setMetadata("adminChat", new FixedMetadataValue(rtmcplugin,(enable)));
 		player.sendMessage( ChatColor.RED + (enable?"Enabled":"Disabled") + " admin chat.");
 	}
 	
@@ -53,9 +54,8 @@ public class adminChatMain
 		ChatManager.sendMessage(ChatManager.format(AdminChatFotmat, Bukkit.getPlayer(playername), msg), new String[]{"RTMCPlugin.adminchat.listen"});
 	}
 	
-	public void sendAdminChat(String playername, String msg)
+	public static void sendAdminChat(String playername, String msg)
 	{
-		System.out.println("[ADMINCHAT]["+playername+"]: "+msg);
 		sendAdminChatMessage(playername, msg);
 	}
 	

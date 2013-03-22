@@ -17,7 +17,12 @@ public class Synchronizer
 	
 	public Synchronizer(RTMCPlugin main)
 	{
-		FileConfiguration config = main.getConfig();
+		;
+	}
+	
+	public static void init(RTMCPlugin rtmcplugin)
+	{
+		FileConfiguration config = rtmcplugin.getConfig();
 		
 		if(config.isString("sync.path"))
 			pipe_prefix = (String)config.get("sync.path");
@@ -80,11 +85,11 @@ public class Synchronizer
 			listeners = new syncListener[0];
 			senders = new syncSender[0];
 		}
-
-		main.getServer().getPluginManager().registerEvents(new eventListener(this, config), main);
+		
+		rtmcplugin.getServer().getPluginManager().registerEvents(new eventListener(config), rtmcplugin);
 	}
 	
-	public void unload()
+	public static void unload()
 	{
 		for(syncListener listener : listeners)
 			listener.kill();
